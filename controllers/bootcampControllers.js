@@ -1,3 +1,5 @@
+import mongoose from "mongoose"
+
 // @desc    Get all bootcamps
 // @route   Get /api/v1/bootcamps
 // @access  Public
