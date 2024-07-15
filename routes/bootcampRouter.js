@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createBootcamp, deleteBootcamp, getAllBootcamps, getBootcamp, updateBootcamp } from "../controllers/bootcampControllers.js";
+import { createBootcamp, deleteBootcamp, getBootcamps, getBootcamp, updateBootcamp } from "../controllers/bootcampControllers.js";
 const router = Router()
 
-router.get("/", getAllBootcamps)
+router.get("/", getBootcamps)
 
 router.get("/:id", getBootcamp)
 

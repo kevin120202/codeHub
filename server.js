@@ -2,6 +2,7 @@ import express from "express"
 const app = express()
 import morgan from "morgan"
 import mongoose from "mongoose"
+import { errorHandler } from "./middleware/error.js"
 
 // Route files
 import bootcampRouter from "./routes/bootcampRouter.js"
@@ -16,6 +17,8 @@ app.use(express.json())
 
 // Mount routers 
 app.use("/api/v1/bootcamps", bootcampRouter)
+
+app.use(errorHandler)
 
 // Connect to database and start server
 const PORT = process.env.PORT || 8000
