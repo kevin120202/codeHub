@@ -6,6 +6,7 @@ import { errorHandler } from "./middleware/error.js"
 
 // Route files
 import bootcampRouter from "./routes/bootcampRouter.js"
+import courseRouter from "./routes/courseRouter.js"
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
@@ -17,6 +18,7 @@ app.use(express.json())
 
 // Mount routers 
 app.use("/api/v1/bootcamps", bootcampRouter)
+app.use("/api/v1/courses", courseRouter)
 
 app.use(errorHandler)
 
