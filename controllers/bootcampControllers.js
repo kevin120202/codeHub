@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import Bootcamp from "../models/BootcampModel.js"
 import ErrorResponse from "../utils/errorResponse.js"
 import { asyncHandler } from "../middleware/async.js"
+import geocoder from "../utils/geocoder.js"
 
 // @desc    Get all bootcamps
 // @route   Get /api/v1/bootcamps
@@ -59,3 +60,29 @@ export const deleteBootcamp = asyncHandler(async (req, res, next) => {
     res.status(StatusCodes.OK).json({ success: true, data: removedBootcamp })
 })
 
+// @desc    Get bootcamp within a radius
+// @route   GET /api/v1/bootcamps/radius/:zipcode/:distance
+// @access  Private
+export const getBootcampsInRadius = asyncHandler(async (req, res, next) => {
+    const { zipcode, distance } = req.params
+
+    // Get lat/lng from geocoder
+    const loc = await geocoder.geocode(zipcode)
+    const lat = loc[0].latitude
+    const lng = loc[0].longitude
+
+    // Calc radius using radians
+    // Divide dist by radius of Earth
+    // Earth Radius = 3,963 mi / 6,378 km
+    const radius = distance / 3963
+
+    const bootcamps = await Bootcamp.find({
+        location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+    })
+
+    res.status(200).json({
+        success: true,
+        count: bootcamps.length,
+        data: bootcamps
+    })
+})
