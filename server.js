@@ -3,10 +3,13 @@ const app = express()
 import morgan from "morgan"
 import mongoose from "mongoose"
 import { errorHandler } from "./middleware/error.js"
+import { fileURLToPath } from 'url';
+import path from 'path'
 
 // Route files
 import bootcampRouter from "./routes/bootcampRouter.js"
 import courseRouter from "./routes/courseRouter.js"
+import fileUpload from "express-fileupload"
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
@@ -15,6 +18,14 @@ if (process.env.NODE_ENV === "development") {
 
 // Body parser
 app.use(express.json())
+
+// File uploading
+app.use(fileUpload())
+
+// Set static folder
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Mount routers 
 app.use("/api/v1/bootcamps", bootcampRouter)

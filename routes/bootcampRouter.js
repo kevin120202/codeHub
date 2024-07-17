@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createBootcamp, deleteBootcamp, getBootcamps, getBootcamp, updateBootcamp, getBootcampsInRadius } from "../controllers/bootcampControllers.js";
+import { createBootcamp, deleteBootcamp, getBootcamps, getBootcamp, updateBootcamp, getBootcampsInRadius, bootcampPhotoUpload } from "../controllers/bootcampControllers.js";
 import courseRouter from "./courseRouter.js"
 const router = Router()
 
@@ -17,5 +17,7 @@ router.post("/", createBootcamp)
 router.put("/:id", updateBootcamp)
 
 router.delete("/:id", deleteBootcamp)
+
+router.put("/:id/photo", bootcampPhotoUpload)
 
 export default router
