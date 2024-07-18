@@ -5,6 +5,7 @@ import mongoose from "mongoose"
 import { errorHandler } from "./middleware/error.js"
 import { fileURLToPath } from 'url';
 import path from 'path'
+import cookieParser from "cookie-parser"
 
 // Route files
 import bootcampRouter from "./routes/bootcampRouter.js"
@@ -19,6 +20,9 @@ if (process.env.NODE_ENV === "development") {
 
 // Body parser
 app.use(express.json())
+
+// Cookie parser
+app.use(cookieParser())
 
 // File uploading
 app.use(fileUpload())
