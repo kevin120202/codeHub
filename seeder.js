@@ -10,6 +10,7 @@ dotenv.config();
 // Load models
 import Bootcamp from './models/BootcampModel.js'
 import Course from './models/CourseModel.js';
+import User from './models/UserModel.js';
 
 // Connect to DB
 mongoose.connect(process.env.MONGO_URI)
@@ -21,12 +22,14 @@ const __dirname = dirname(__filename);
 // Read JSON files
 const bootcamps = JSON.parse(readFileSync(`${__dirname}/_data/bootcamps.json`, 'utf-8'))
 const courses = JSON.parse(readFileSync(`${__dirname}/_data/courses.json`, 'utf-8'))
+const users = JSON.parse(readFileSync(`${__dirname}/_data/users.json`, 'utf-8'))
 
 // Import to DB
 const importData = async () => {
     try {
         await Bootcamp.create(bootcamps)
         await Course.create(courses)
+        await User.create(users)
         console.log("Data imported");
         process.exit()
     } catch (err) {
@@ -39,6 +42,7 @@ const deleteData = async () => {
     try {
         await Bootcamp.deleteMany()
         await Course.deleteMany()
+        await User.deleteMany()
         console.log("Data destroyed");
         process.exit()
     } catch (err) {
