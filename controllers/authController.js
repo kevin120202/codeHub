@@ -60,4 +60,12 @@ export const login = asyncHandler(async (req, res, next) => {
 export const logout = asyncHandler(async (req, res) => {
 
     res.status(201).json({ msg: "user logged out" })
+})
+
+// @desc    Get current user
+// @route   GET /api/v1/auth/me
+// @access  Private
+export const getCurrentUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user.id)
+    res.status(200).json({ success: true, data: user })
 }) 

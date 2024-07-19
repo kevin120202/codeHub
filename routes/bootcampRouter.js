@@ -3,6 +3,7 @@ import { createBootcamp, deleteBootcamp, getBootcamps, getBootcamp, updateBootca
 import courseRouter from "./courseRouter.js"
 import { advancedResults } from "../middleware/advancedResults.js";
 import Bootcamp from "../models/BootcampModel.js";
+import { protect } from "../middleware/auth.js";
 const router = Router()
 
 // Include other resource routers
@@ -14,12 +15,12 @@ router.get("/", advancedResults(Bootcamp, "courses"), getBootcamps)
 
 router.get("/:id", getBootcamp)
 
-router.post("/", createBootcamp)
+router.post("/", protect, createBootcamp)
 
-router.put("/:id", updateBootcamp)
+router.put("/:id", protect, updateBootcamp)
 
-router.delete("/:id", deleteBootcamp)
+router.delete("/:id", protect, deleteBootcamp)
 
-router.put("/:id/photo", bootcampPhotoUpload)
+router.put("/:id/photo", protect, bootcampPhotoUpload)
 
 export default router
