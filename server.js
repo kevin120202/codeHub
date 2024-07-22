@@ -12,6 +12,7 @@ import bootcampRouter from "./routes/bootcampRouter.js"
 import courseRouter from "./routes/courseRouter.js"
 import fileUpload from "express-fileupload"
 import authRouter from "./routes/authRouter.js"
+import usersRouter from "./routes/usersRouter.js"
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use("/api/v1/bootcamps", bootcampRouter)
 app.use("/api/v1/courses", courseRouter)
 app.use("/api/v1/auth", authRouter)
+app.use("/api/v1/users", usersRouter)
 
 app.use(errorHandler)
 
