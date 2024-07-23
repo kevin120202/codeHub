@@ -45,11 +45,51 @@ export const createReview = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.bootcampId}`, 404))
     }
 
-    // Make sure user is bootcamp owner
-    if (bootcamp.user.toString() !== req.user.id && req.user.role !== "admin") {
-        return next(new ErrorResponse(`User ${req.user.id} is not authorized to add a review to bootcamp ${req.params.bootcampId}`, 401))
-    }
-
     const review = await Review.create(req.body)
     res.status(201).json({ success: true, data: review })
+})
+
+// @desc    Update review
+// @route   PUT /api/v1/reviews/:id
+// @access  Private
+export const updateReview = asyncHandler(async (req, res, next) => {
+    const { id } = req.params
+    let review = await Review.findById(id)
+    if (!review) {
+        return next(new ErrorResponse(`Review not found with id of ${req.params.id}`, 404))
+    }
+
+    // Make sure review belongs to user or user is admin
+    if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse('Not authorize to update review', 401))
+    }
+
+    review = await Review.findByIdAndUpdate(id, req.body, {
+        new: true,
+        runValidators: true,
+    })
+
+    review.save()
+
+    res.status(201).json({ success: true, data: review })
+})
+
+// @desc    Delete review
+// @route   PUT /api/v1/reviews/:id
+// @access  Private
+export const deleteReview = asyncHandler(async (req, res, next) => {
+    const { id } = req.params
+    const review = await Review.findById(id)
+    if (!review) {
+        return next(new ErrorResponse(`Review not found with id of ${req.params.id}`, 404))
+    }
+
+    // Make sure review belongs to user or user is admin
+    if (review.user.toString() !== req.user.id && req.user.role !== "admin") {
+        return next(new ErrorResponse('Not authorize to update review', 401))
+    }
+
+    await review.deleteOne()
+
+    res.status(201).json({ success: true, data: {} })
 })
